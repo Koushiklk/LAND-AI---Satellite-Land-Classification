@@ -1,10 +1,9 @@
-venv/
-backend/venv/
 __pycache__/
 *.pyc
-backend/data/*.db
-backend/output/geojson/*
-backend/output/reports/*
-!backend/output/geojson/.gitkeep
-!backend/output/reports/.gitkeep
+data/land_ai.db
+output/geojson/*
+output/reports/*
+!output/geojson/.gitkeep
+!output/reports/.gitkeep
 .env
+venv/

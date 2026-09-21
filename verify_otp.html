@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Verify code — LAND AI{% endblock %}
+{% block content %}
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="badge">🔐</div>
+      <strong style="font-family:var(--font-display); font-size:1.1rem;">LAND AI</strong>
+    </div>
+    <div class="auth-eyebrow">STEP 2 OF 2 — VERIFICATION</div>
+    <h1 class="auth-title">Enter your code</h1>
+    <p class="auth-sub">We sent a 6-digit code to <strong style="color:var(--text-hi)">{{ email }}</strong>.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+        <div class="flash flash-{{ category }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('verify_otp_route') }}" id="otpForm">
+      <div class="otp-inputs">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+        <input type="text" maxlength="1" inputmode="numeric" class="otp-digit">
+      </div>
+      <input type="hidden" name="code" id="codeField">
+      <button type="submit" class="btn btn-primary btn-block" style="margin-top:16px;">Verify &amp; continue</button>
+    </form>
+
+    <form method="POST" action="{{ url_for('resend_otp') }}" style="margin-top:10px;">
+      <button type="submit" class="btn btn-ghost btn-block">Resend code</button>
+    </form>
+
+    {% if dev_hint %}
+    <div class="dev-hint">
+      DEV_MODE is on (config.py) — no SMTP is configured, so here's your code for testing: <strong>{{ dev_hint }}</strong>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  const digits = document.querySelectorAll('.otp-digit');
+  const codeField = document.getElementById('codeField');
+
+  digits.forEach((el, i) => {
+    el.addEventListener('input', () => {
+      el.value = el.value.replace(/[^0-9]/g, '');
+      if (el.value && i < digits.length - 1) digits[i + 1].focus();
+      updateCode();
+    });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !el.value && i > 0) digits[i - 1].focus();
+    });
+  });
+
+  function updateCode() {
+    codeField.value = Array.from(digits).map(d => d.value).join('');
+  }
+</script>
+{% endblock %}
