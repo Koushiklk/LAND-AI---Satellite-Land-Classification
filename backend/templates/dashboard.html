@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — LAND AI{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+{% endblock %}
+{% block content %}
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span>LAND AI</div>
+  <div class="topbar-right">
+    <div class="user-chip">👤 {{ username }}</div>
+    <a class="logout-link" href="{{ url_for('logout') }}">Log out</a>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="hero">
+    <div>
+      <h1 class="hero-title">Satellite Land Classification</h1>
+      <p class="hero-sub">Select a location → draw an area → classify land cover → export GIS polygons.</p>
+    </div>
+    <div class="hero-steps" id="stepTracker">
+      <span data-step="1" class="active">1 · Location</span>
+      <span data-step="2">2 · Draw area</span>
+      <span data-step="3">3 · Fetch image</span>
+      <span data-step="4">4 · Classify</span>
+      <span data-step="5">5 · Results</span>
+      <span data-step="6">6 · Polygons</span>
+      <span data-step="7">7 · Download</span>
+    </div>
+  </div>
+
+  <div class="workspace">
+
+    <!-- LEFT: map + controls -->
+    <div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Select location &amp; draw area</h3>
+          <span class="step-tag">STEP 1–2</span>
+        </div>
+
+        <div class="search-row" id="searchResults">
+          <input type="text" id="locationInput" placeholder="Search a location, e.g. Davangere, Karnataka">
+          <button class="btn btn-primary" id="searchBtn">Search</button>
+        </div>
+
+        <div class="toolbar">
+          <button class="btn btn-ghost" id="drawPolygonBtn">✏️ Draw polygon</button>
+          <button class="btn btn-ghost" id="drawRectBtn">▭ Draw rectangle</button>
+          <button class="btn btn-ghost" id="clearBtn">🗑 Clear</button>
+        </div>
+
+        <div id="map"></div>
+
+        <div class="status-line">
+          <span class="status-dot" id="areaDot"></span>
+          <span id="areaStatus">No area selected yet.</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Run classification</h3>
+          <span class="step-tag">STEP 3–4</span>
+        </div>
+        <p style="font-size:0.86rem;">
+          Fetches the satellite image for your selected area and runs it through the LAND AI
+          classification model.
+        </p>
+        <button class="btn btn-primary btn-block" id="classifyBtn" disabled>🧠 Fetch image &amp; classify</button>
+        <div class="status-line">
+          <span class="status-dot" id="classifyDot"></span>
+          <span id="classifyStatus">Waiting for an area selection.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: results -->
+    <div>
+      <div class="panel" id="resultsPanel">
+        <div class="panel-head">
+          <h3>Land cover results</h3>
+          <span class="step-tag">STEP 5</span>
+        </div>
+        <div id="resultsEmpty" class="empty-state">Run a classification to see land-cover statistics here.</div>
+        <div id="resultsContent" style="display:none;">
+          <div class="readout-grid">
+            <div class="readout"><div class="label">Location</div><div class="value" id="outLocation">—</div></div>
+            <div class="readout"><div class="label">Area</div><div class="value" id="outArea">—</div></div>
+          </div>
+          <div id="classBars" style="margin-top:16px;"></div>
+        </div>
+      </div>
+
+      <div class="panel" id="polygonPanel">
+        <div class="panel-head">
+          <h3>GIS polygons</h3>
+          <span class="step-tag">STEP 6</span>
+        </div>
+        <div id="polygonEmpty" class="empty-state">Classified polygons will appear on the map once you run a classification.</div>
+        <div id="polygonContent" style="display:none; font-size:0.85rem; color: var(--text-mid);">
+          Classified polygons are now layered on the map — toggle classes with the layer control (top right of the map).
+        </div>
+      </div>
+
+      <div class="panel" id="downloadPanel">
+        <div class="panel-head">
+          <h3>Download output</h3>
+          <span class="step-tag">STEP 7</span>
+        </div>
+        <div class="download-row">
+          <a class="btn btn-ghost" href="#" id="downloadGeojson">⬇ GeoJSON</a>
+          <a class="btn btn-ghost" href="#" id="downloadShapefile">⬇ Shapefile</a>
+        </div>
+        <a class="btn btn-primary btn-block" style="margin-top:10px;" href="#" id="downloadReport">📄 Download final report</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">LAND AI · Smart Mapping · Better Decisions · Sustainable Future</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+<script>
+  window.LAND_CLASSES = {{ land_classes | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

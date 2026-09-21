@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}LandAI — Satellite Land Classification{% endblock %}
+{% block content %}
+
+<nav class="landing-nav">
+  <div class="wordmark">LandAI</div>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#features">Features</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a class="nav-cta" href="{{ url_for('dashboard') if session.get('user_id') else url_for('login') }}">Predict</a>
+  <button class="nav-toggle" id="navToggle">☰</button>
+</nav>
+
+<section class="hero-space" id="home">
+  <div class="hero-content">
+    <div class="hero-eyebrow">AI &bull; GIS &bull; REMOTE SENSING</div>
+    <h1 class="hero-headline">
+      <span class="line-cyan">Satellite Land</span>
+      <span class="line-white">Classification</span>
+    </h1>
+    <p class="hero-lede">
+      AI-powered land cover classification using deep learning, remote sensing,
+      and computer vision — draw an area, get a classification, export GIS-ready data.
+    </p>
+    <div class="hero-cta-row">
+      <a class="btn btn-primary" href="{{ url_for('dashboard') if session.get('user_id') else url_for('login') }}">🧠 Predict now</a>
+      <a class="btn btn-ghost" href="#features">See features</a>
+    </div>
+  </div>
+</section>
+
+<section class="landing-section" id="about">
+  <div class="about-grid">
+    <div>
+      <div class="section-eyebrow">ABOUT</div>
+      <h2 class="section-title">From your selected land to smart insights</h2>
+      <p style="color:var(--text-mid); max-width:520px;">
+        LandAI takes any area you draw on the map, runs it through a land-cover
+        classification model, and turns the result into GIS polygons you can
+        analyze, map, and export — no remote sensing background required.
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="stat"><div class="num">6</div><div class="lbl">Land cover classes</div></div>
+      <div class="stat"><div class="num">8</div><div class="lbl">Step workflow</div></div>
+      <div class="stat"><div class="num">2</div><div class="lbl">Export formats</div></div>
+      <div class="stat"><div class="num">2FA</div><div class="lbl">Secure sign-in</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="landing-section" id="features">
+  <div class="section-eyebrow">FEATURES</div>
+  <h2 class="section-title">Everything from location to final report</h2>
+  <p class="section-lede">A complete pipeline, not just a classifier.</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="icon">📍</span>
+      <h4>Location search &amp; draw</h4>
+      <p>Search any place and draw a polygon or rectangle directly on a live satellite map.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">🧠</span>
+      <h4>AI classification</h4>
+      <p>Land cover is classified into Forest, Agriculture, Urban, Water, Barren Land, and Rangeland.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">🗺️</span>
+      <h4>GIS polygons</h4>
+      <p>Classification results are turned into map-ready vector polygons, layered right on the map.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">⬇️</span>
+      <h4>GeoJSON &amp; Shapefile export</h4>
+      <p>Download results in formats that drop straight into QGIS or any GIS tool.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">📄</span>
+      <h4>PDF reports</h4>
+      <p>Generate a clean, shareable PDF summary of the classification for any area.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">🔐</span>
+      <h4>Two-step verification</h4>
+      <p>Every account is protected with a one-time code on registration and login.</p>
+    </div>
+  </div>
+</section>
+
+<section class="landing-section" id="contact">
+  <div class="contact-panel">
+    <div>
+      <h3>Ready to classify your first area?</h3>
+      <p>Sign in and draw your first area of interest in under a minute.</p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('dashboard') if session.get('user_id') else url_for('login') }}">Get started →</a>
+  </div>
+</section>
+
+<div class="landing-footer">LandAI &middot; Smart Mapping &middot; Better Decisions &middot; Sustainable Future</div>
+
+<script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+{% endblock %}

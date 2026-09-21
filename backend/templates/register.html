@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Create account — LAND AI{% endblock %}
+{% block content %}
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="badge">🛰️</div>
+      <strong style="font-family:var(--font-display); font-size:1.1rem;">LAND AI</strong>
+    </div>
+    <div class="auth-eyebrow">SATELLITE LAND CLASSIFICATION SYSTEM</div>
+    <h1 class="auth-title">Create your account</h1>
+    <p class="auth-sub">We'll send a one-time code to verify your email after this step.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+        <div class="flash flash-{{ category }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('register') }}">
+      <div class="field">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="jane_doe" required>
+      </div>
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" name="email" placeholder="jane@email.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="At least 8 characters" minlength="8" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Create account <span>→</span></button>
+    </form>
+
+    <div class="auth-foot">
+      Already have an account? <a href="{{ url_for('login') }}">Sign in</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

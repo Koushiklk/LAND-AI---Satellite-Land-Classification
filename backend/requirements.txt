@@ -1,0 +1,20 @@
+# ---- Core app (required) ----
+Flask==3.0.3
+Werkzeug==3.0.3
+
+# ---- Optional: real Shapefile export (backend/app.py falls back to GeoJSON
+#      automatically if this isn't installed) ----
+pyshp==2.3.1
+
+# ---- Optional: for when you plug in a REAL trained classifier / real GIS
+#      processing (raster classification, reprojection, polygon simplification).
+#      Not required to run the app out of the box. ----
+# numpy
+# pandas
+# scikit-learn
+# Pillow
+# rasterio
+# geopandas
+# shapely
+# pyproj
+# fiona
